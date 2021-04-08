@@ -1,0 +1,73 @@
+body {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+div {
+    margin: 0;
+}
+
+canvas {
+    background-color: #065964;
+    border: 1px solid #0b525c;
+    margin-bottom: -5px;
+}
+
+.startbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: block;
+    height: 38px;
+    width: 100vw;
+    background-color: #bdbebd;
+    border-top: 2px solid #999999;
+    padding: 3px;
+}
+#toolbar {
+    background: #c0c0c0;
+    margin: auto;
+    height: 35px;
+    margin-top: 0;
+    width: 752px;
+    position: relative;
+    border-top: 2px solid #b1b1b1;
+    }
+
+.toolbar-start-menu {
+    float: left;
+    }
+
+.toolbar-right {
+    float: right;
+    margin: 2px 3px;
+    height: 26px;
+    border: 2px solid #7c7c7c;
+    border-bottom-color: #fff;
+    border-right-color: #fff;
+}
+
+#score {
+    font-size: 15px;
+    font-family: 'MS Sans Serif', sans-serif, monospace;
+    padding: 5px;
+    float: right;
+}
+
+#start-button {
+    background: url(https://win98icons.alexmeub.com/icons/png/windows-0.png) no-repeat 2px center / 24px;
+    padding-left: 28px;
+    padding-right: 5px;
+    height: 29px;
+     margin: 2px 3px;
+    font-weight: bold;
+     border: 2px solid #7c7c7c;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    }
+#start-button:hover {
+        background-color: #979797;
+        color: white;
+    }
