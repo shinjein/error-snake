@@ -10,7 +10,6 @@ class Snake {
         ];
         this.width = 50;
         this.height = 50;
-
     }
        /*
     draw() {
@@ -46,22 +45,23 @@ class Snake {
         }
         this.drawTail()
     } */
-      changeDirection (direction) {
-    const newCell = this.calculateNextCell(direction);
+    changeDirection (direction) {
+        const newCell = this.calculateNextCell(direction);
     
     // const intersection = this.checkIntersection(newCell);
 
-    const isNotAllowed = (
-      direction === 'left' && this.direction === 'right' ||
-      direction === 'right' && this.direction === 'left' ||
-      direction === 'up' && this.direction === 'down' ||
-      direction === 'down' && this.direction === 'up'
-    );
+        const isNotAllowed = (
+        direction === 'left' && this.direction === 'right' ||
+        direction === 'right' && this.direction === 'left' ||
+        direction === 'up' && this.direction === 'down' ||
+        direction === 'down' && this.direction === 'up'
+        );
 
-    if(!isNotAllowed) {
-      this.direction = direction;
+        if(!isNotAllowed) {
+        this.direction = direction;
+            }
     }
-  }
+
     calculateNextCell(direction) {
         const head = this.tail[this.tail.length-1]
 
@@ -87,22 +87,22 @@ class Snake {
         return newCell;
 
     }
-     checkIntersection (item) {
-    return this.tail.find(cell => cell[0] === item[0] && cell[1] === item[1]);
-  }
-   checkCollisionWithFruit (fruit) {
 
+    checkIntersection (item) {
+        return this.tail.find(cell => cell[0] === item[0] && cell[1] === item[1]);
+    }
 
-    const column = fruit.column;
-    const row = fruit.row;
+    checkCollisionWithFruit (fruit) {
+        const column = fruit.column;
+        const row = fruit.row;
+        const intersection = this.checkIntersection([ column, row ])
+        
+        return intersection;
 
-    const intersection = this.checkIntersection([ column, row ])
+     }
 
-    return intersection;
-  }
-
-  checkCollisionWithWalls() {
-       const cell_width = 50;
+    checkCollisionWithWalls() {
+        const cell_width = 50;
 
        for (let cell of this.tail) {
            const column = cell[0]
@@ -111,15 +111,15 @@ class Snake {
            const x = column * cell_width;
            const y = row * cell_width;
         
-                  if (x < 0) {
-        gameOver();
-    } else if (x > canvas.width) {
-         gameOver();
-    } else if (y < 0){
-         gameOver();
-    } else if (y > canvas.height) {
-        gameOver();
-    }
+        if (x < 0) {
+            endGame();
+        } else if (x > canvas.width) {
+            endGame();
+        } else if (y < 0){
+            endGame();
+        } else if (y > canvas.height) {
+            endGame();
+        }
        
        }
 /*
@@ -141,25 +141,28 @@ class Snake {
 
     return newTail.some(cell => cell[0] === head[0] && cell[1] === head[1]);
   }
-    runLogic(fruit) {
+    
+  runLogic(fruit) {
         const newCell = this.calculateNextCell(this.direction);
         this.tail.push(newCell);
          // Check collision with fruit
-    const intersection = this.checkCollisionWithFruit(fruit);
+        const intersection = this.checkCollisionWithFruit(fruit);
 
-    if (intersection) {
-      fruit.setRandomPosition();
-    
-    } else {
-      this.tail.shift();
-    }
+        if (intersection) {
+        fruit.setRandomPosition();
+        } else {
+        this.tail.shift();
+        }
 
-    // Check collision with self
-    const isColliding = this.checkCollisionWithSelf();
+        if(this.tail.length > 10) {
+            this.tail.pop(newCell);
+        }
+        // Check collision with self
+        const isColliding = this.checkCollisionWithSelf();
 
-    if (isColliding && startedMoving) {
-      gameOver();
-    }
+        if (isColliding && startedMoving) {
+        endGame()
+        }
 
 
     }

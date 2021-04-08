@@ -4,15 +4,16 @@ class Apple {
         this.height = 50;
         this.row = 0;
         this.column = 0;
+        this.score = 0;
 
         this.image = new Image();
         this.image.src = './images/apples/applelogo.png';
 
     }
-      setRandomPosition (snake) {
+    setRandomPosition (snake) {
     this.row = Math.floor(Math.random() * 10);
     this.column = Math.floor(Math.random() * 10);
-
+    this.score++;
 /*
     if (snake.checkCollisionWithFruit(fruit)) {
       this.setRandomPosition(snake);
