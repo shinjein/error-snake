@@ -9,6 +9,7 @@ let currentSnake;
 let currentApple;
 let currentScore = 0;
 let animationId;
+let startedMoving = false;
 
 let speed = 5;
 let frames = 0;
@@ -18,16 +19,15 @@ function startGame() {
  document.getElementById('game-board').style.display  = 'block';
     currentGame = new Game();
     currentSnake = new Snake();
-    currentApple = new Apple(100, 100);
+    currentApple = new Apple();
 
     currentGame.snake = currentSnake;
     currentGame.apple = currentApple;
-    currentGame.apple.draw();
-    currentGame.snake.checkDirection(currentGame.score);
-    currentGame.snake.draw();
-    drawGame();
-}
+    currentGame.apple.setRandomPosition(currentGame.snake);
 
+    update();
+}
+/*
 function drawGame() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -81,7 +81,28 @@ function drawGame() {
     }
 
 } 
+*/
+function update() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+   currentGame.snake.runLogic(currentGame.apple);
+   currentGame.snake.drawSnake();
+    currentGame.apple.draw();
+    currentGame.snake.checkCollisionWithWalls();
+    console.log(currentGame.snake)
+        if (currentGame.snake.checkCollisionWithFruit(currentGame.apple)) {
+        currentGame.apple.clear();
+       currentGame.apple.setRandomPosition(currentGame.snake);
+        }
+  
 
+    if(!currentGame.gameOver) {
+    animationId = setTimeout(() => {
+         update()
+     }, 300);
+    }
+}
+
+/*
 function generateNewApple() {
     let randomX = Math.floor(Math.random()*(650));
     let randomY = Math.floor(Math.random()*(450));
@@ -98,7 +119,15 @@ function eatApple() {
         (currentGame.snake.y + currentGame.snake.height < currentGame.apple.y)
         );
 }
+*/
 //gameover
+function gameOver() {
+  currentGame.gameOver = true;
+  drawGameOver();
+      if (animationId) {
+      clearTimeout(animationId);
+    }   
+}
 function endGame() {
     let gameOver = false;
     //hitting top / bottom
@@ -132,21 +161,22 @@ function scoreCount() {
 }
 
 document.addEventListener('keydown', (e) => {
+    e.preventDefault()
+    startedMoving = true;
     switch(e.keyCode) {
         case 38: //up cursor key
-            currentGame.snake.direction = 'up';
+            currentGame.snake.changeDirection("up");
             break;
         case 40: //down cursor key
-            currentGame.snake.direction = 'down';
+            currentGame.snake.changeDirection("down");
             break;
         case 37: //left cursor key
-            currentGame.snake.direction = 'left';
+            currentGame.snake.changeDirection("left");
             break;
         case 39: 
-            currentGame.snake.direction ='right';
+            currentGame.snake.changeDirection("right");
             break;
     }
-    currentSnake.draw();
 });
 
 // function itsGameOver() {
@@ -181,3 +211,23 @@ document.addEventListener('keydown', (e) => {
 //     } else return gameOver;
 
 // }
+
+/*
+function generateNewApple() {
+    let randomX = Math.floor(Math.random()*(650));
+    let randomY = Math.floor(Math.random()*(450));
+    currentApple = new Apple(randomX, randomY);
+    currentGame.apple = currentApple;
+    currentGame.apple.draw();
+}
+
+function eatApple() {
+    return !(
+        (currentGame.snake.x > currentGame.apple.x + currentGame.apple.width) || //snake is on the right hand side of the apple
+        (currentGame.snake.x + currentGame.snake.width < currentGame.apple.x) || //snake is on the left hand side of the apple
+        (currentGame.snake.y > currentGame.apple.y + currentGame.apple.height) || //snake is above the apple
+        (currentGame.snake.y + currentGame.snake.height < currentGame.apple.y)
+        );
+}
+*/
+//gameover
